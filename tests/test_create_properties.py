@@ -98,7 +98,7 @@ def test_create_duplicate_email_fails(name, email, age):
     
     # Intentar crear segundo usuario con mismo email debe fallar
     with pytest.raises(ValueError, match="ya está en uso"):
-        crud.create("Otro nombre", email, age + 1)
+        crud.create("Otro nombre", email, 25)
     
     # El contador no debe haber cambiado
     assert crud.count() == 1

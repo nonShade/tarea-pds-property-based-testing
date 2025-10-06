@@ -107,33 +107,24 @@ def test_update_single_field_properties(name, email, age, field_to_update):
 
 
 @given(
-    users_data=st.lists(
-        st.tuples(
-            st.text(min_size=1, max_size=50).filter(lambda x: x.strip()),
-            st.emails(),
-            st.integers(min_value=0, max_value=150)
-        ),
-        min_size=2,
-        max_size=5,
-        unique_by=lambda x: x[1]  # Emails únicos
-    )
+    name1=st.text(min_size=1, max_size=50).filter(lambda x: x.strip()),
+    email1=st.emails(),
+    age1=st.integers(min_value=0, max_value=150),
+    name2=st.text(min_size=1, max_size=50).filter(lambda x: x.strip()),
+    email2=st.emails(),
+    age2=st.integers(min_value=0, max_value=150)
 )
-def test_update_duplicate_email_fails(users_data):
+def test_update_duplicate_email_fails(name1, email1, age1, name2, email2, age2):
     """
     Prueba basada en propiedades para validar que actualizar con email duplicado falla.
     """
-    assume(len(users_data) >= 2)
+    assume(email1 != email2)  # Asegurar emails diferentes
     
     crud = UserCRUD()
-    created_users = []
     
-    # Crear usuarios
-    for name, email, age in users_data:
-        user = crud.create(name, email, age)
-        created_users.append(user)
-    
-    user1 = created_users[0]
-    user2 = created_users[1]
+    # Crear dos usuarios
+    user1 = crud.create(name1, email1, age1)
+    user2 = crud.create(name2, email2, age2)
     
     # Intentar actualizar user1 con el email de user2 debe fallar
     with pytest.raises(ValueError, match="ya está en uso"):

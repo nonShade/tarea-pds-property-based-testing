@@ -42,6 +42,12 @@ class User:
         updates = {k: v for k, v in kwargs.items() if k in allowed_fields}
         
         if updates:
+            # Normalizar datos como en create
+            if "name" in updates:
+                updates["name"] = updates["name"].strip()
+            if "email" in updates:
+                updates["email"] = updates["email"].strip().lower()
+            
             updates["updated_at"] = datetime.now()
             # Crear una nueva instancia con los valores actualizados
             new_data = {
