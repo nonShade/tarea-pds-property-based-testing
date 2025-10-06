@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "user-crud-property-testing"
+version = "0.1.0"
+description = "CRUD de usuarios con property-based testing"
+authors = [{name = "Developer", email = "dev@example.com"}]
+license = {text = "MIT"}
+dependencies = [
+    "hypothesis>=6.88.1",
+    "pytest>=7.4.2",
+    "dataclasses-json>=0.6.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "hypothesis"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
