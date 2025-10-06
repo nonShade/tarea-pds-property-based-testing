@@ -79,8 +79,6 @@ cd user-crud-property-testing
 # Crear entorno virtual
 python3 -m venv venv
 source venv/bin/activate  # En Linux/Mac
-# o
-venv\Scripts\activate  # En Windows
 
 # Instalar dependencias
 pip install -r requirements.txt
@@ -99,30 +97,6 @@ PYTHONPATH=src python -m pytest tests/test_delete_properties.py -v
 
 # Ejecutar con más detalles de Hypothesis
 PYTHONPATH=src python -m pytest tests/ -v --hypothesis-show-statistics
-```
-
-### Uso del CRUD
-```python
-from user_crud.crud import UserCRUD
-from user_crud.models import User
-
-# Crear instancia del CRUD
-crud = UserCRUD()
-
-# Crear usuario
-user = crud.create("Juan Pérez", "juan@example.com", 30)
-print(f"Usuario creado: {user.id}")
-
-# Leer usuario
-user_by_id = crud.get_by_id(user.id)
-user_by_email = crud.get_by_email("juan@example.com")
-all_users = crud.get_all()
-
-# Actualizar usuario
-updated_user = crud.update(user.id, age=31, name="Juan Carlos Pérez")
-
-# Eliminar usuario
-success = crud.delete(user.id)
 ```
 
 ## Ventajas del Property-Based Testing
@@ -158,14 +132,6 @@ def test_create_user_properties(name, email, age):
     assert crud.exists(user.id)
 ```
 
-### Beneficios Clave
-
-1. **Cobertura Amplia**: Hypothesis genera automáticamente cientos de casos de prueba
-2. **Detección de Edge Cases**: Encuentra casos extremos que no consideraríamos manualmente
-3. **Simplificación Automática**: Cuando encuentra un error, lo reduce al caso mínimo que lo reproduce
-4. **Invariantes del Sistema**: Se enfoca en propiedades que siempre deben cumplirse
-5. **Mantenimiento Reducido**: Las pruebas no dependen de datos específicos hardcodeados
-
 ## Tecnologías Utilizadas
 
 - **Python 3.8+**: Lenguaje de programación
@@ -174,26 +140,6 @@ def test_create_user_properties(name, email, age):
 - **dataclasses**: Para definición de modelos
 - **UUID**: Para generación de identificadores únicos
 - **datetime**: Para manejo de timestamps
-
-## Conceptos de Property-Based Testing Implementados
-
-### Generadores (Strategies)
-- `st.text()`: Genera strings con restricciones de tamaño
-- `st.emails()`: Genera emails válidos automáticamente
-- `st.integers()`: Genera enteros en rangos específicos
-- `st.lists()`: Genera listas con elementos únicos
-- `st.tuples()`: Combina múltiples generators
-
-### Filtros y Assumptions
-- `filter()`: Filtra valores generados según criterios
-- `assume()`: Descarta casos que no cumplen precondiciones
-- `unique_by()`: Garantiza unicidad por campo específico
-
-### Propiedades Verificadas
-- **Invariantes**: Propiedades que nunca deben violarse
-- **Postcondiciones**: Estados que deben cumplirse después de operaciones
-- **Idempotencia**: Operaciones que pueden repetirse sin efectos adicionales
-- **Reversibilidad**: Operaciones que pueden deshacerse
 
 ## Estructura de las Pruebas
 
@@ -204,17 +150,3 @@ Cada archivo de pruebas sigue un patrón consistente:
 3. **Pruebas de casos extremos**
 4. **Pruebas de validación de errores**
 5. **Pruebas de estado vacío/inicial**
-
-## Contribuir
-
-Para contribuir al proyecto:
-
-1. Fork el repositorio
-2. Crea una rama para tu feature
-3. Implementa los cambios con sus respectivas pruebas
-4. Asegúrate de que todas las pruebas pasen
-5. Envía un Pull Request
-
-## Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT.
